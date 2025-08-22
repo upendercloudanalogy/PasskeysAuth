@@ -16,6 +16,10 @@ export default function Login({ setUser }) {
   const [message, setMessage] = useState("");
   const navigate = useNavigate();
 
+  const handleGithubLogin = () => {
+    window.location.href = "http://localhost:3000/auth/github";
+  };
+
   const handleLogin = async (e) => {
     if (e) e.preventDefault(); // prevent form submission if inside form
     setMessage(""); // clear previous messages
@@ -108,6 +112,10 @@ export default function Login({ setUser }) {
       <h1>Login with Passkey</h1>
       <button type="button" onClick={handleLogin}>
         Login with Passkey
+      </button>
+         {/* NEW: GitHub button */}
+      <button type="button" onClick={handleGithubLogin} style={{ marginLeft: 12 }}>
+        Login with GitHub
       </button>
       <p>{message}</p>
     </div>

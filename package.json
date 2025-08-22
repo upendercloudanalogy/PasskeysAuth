@@ -27,8 +27,12 @@
     "@simplewebauthn/server": "^13.1.2",
     "@simplewebauthn/types": "^12.0.0",
     "@supabase/supabase-js": "^2.55.0",
+    "axios": "^1.11.0",
+    "crypto": "^1.0.1",
     "dotenv": "^17.2.1",
+    "express": "^5.1.0",
     "install": "^0.13.0",
+    "jsonwebtoken": "^9.0.2",
     "reflect-metadata": "^0.2.2",
     "rxjs": "^7.8.1",
     "uuid": "^11.1.0"

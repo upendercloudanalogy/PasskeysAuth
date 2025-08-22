@@ -17,7 +17,7 @@ export default function App() {
         <Route path="/signup" element={<SignUp />} />
         <Route
           path="/home"
-          element={user ? <Home user={user} /> : <Navigate to="/" />}
+          element={<Home user={user} />}
         />
       </Routes>
     </BrowserRouter>
