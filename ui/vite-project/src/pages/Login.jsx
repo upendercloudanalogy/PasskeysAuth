@@ -20,6 +20,10 @@ export default function Login({ setUser }) {
     window.location.href = "http://localhost:3000/auth/github";
   };
 
+  const handleGoogleLogin = () => {
+  window.location.href = "http://localhost:3000/auth/google";
+};
+
   const handleLogin = async (e) => {
     if (e) e.preventDefault(); // prevent form submission if inside form
     setMessage(""); // clear previous messages
@@ -117,6 +121,9 @@ export default function Login({ setUser }) {
       <button type="button" onClick={handleGithubLogin} style={{ marginLeft: 12 }}>
         Login with GitHub
       </button>
+      <button type="button" onClick={handleGoogleLogin} style={{ marginLeft: 12 }}>
+  Login with Google
+</button>
       <p>{message}</p>
     </div>
   );

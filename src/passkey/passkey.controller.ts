@@ -103,6 +103,7 @@ import * as jwt from 'jsonwebtoken';
 import { SupabaseService } from './supabase.service';
 import * as crypto from 'crypto';
 import { Logger } from '@nestjs/common';
+import { GoogleService } from './google.service';
 
 // Define user interface
 interface User {
@@ -123,6 +124,7 @@ export class PasskeyController {
     private readonly passkeyService: PasskeyService,
     private readonly githubService: GithubService,
     private readonly supabase: SupabaseService,
+     private readonly googleService: GoogleService,
   ) {}
 
   // Endpoint to start registration
@@ -250,4 +252,57 @@ export class PasskeyController {
       return res.redirect(`${frontend}/login?error=github_auth_failed`);
     }
   }
+
+
+   // ✅ Google Login Start
+  @Get('google')
+  async googleStart(@Res() res: Response) {
+    const url = this.googleService.getAuthUrl();
+    return res.redirect(url);
+  }
+
+  // ✅ Google Callback
+  @Get('google/callback')
+  async googleCallback(@Query('code') code: string, @Res() res: Response) {
+    try {
+      if (!code) throw new Error('No authorization code provided');
+
+      const tokenResponse = await this.googleService.exchangeCodeForToken(code);
+      const { id_token, access_token } = tokenResponse;
+
+      const googleUser = await this.googleService.fetchGoogleUser(id_token, access_token);
+
+      // Check in DB
+      let user = await this.supabase.getUserByEmail(googleUser.email);
+      if (!user) {
+        user = await this.supabase.createUser({
+          id: crypto.randomUUID(),
+          username: googleUser.email.split('@')[0],
+          display_name: googleUser.name,
+          email: googleUser.email,
+          avatar_url: googleUser.picture,
+        });
+      }
+
+      const jwtSecret = process.env.JWT_SECRET!;
+      const appToken = jwt.sign(
+        { sub: user.id, username: user.username, provider: 'google' },
+        jwtSecret,
+        { expiresIn: '7d' }
+      );
+
+      res.cookie('app_token', appToken, {
+        httpOnly: true,
+        secure: false,
+      });
+
+      const frontend = process.env.FRONTEND_URL || 'http://localhost:5173';
+      return res.redirect(`${frontend}/home`);
+    } catch (e: any) {
+      console.error('Google OAuth error:', e.message);
+      const frontend = process.env.FRONTEND_URL || 'http://localhost:5173';
+      return res.redirect(`${frontend}/login?error=google_auth_failed`);
+    }
+  }
 }
+

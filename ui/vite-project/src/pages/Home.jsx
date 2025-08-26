@@ -12,7 +12,7 @@ export default function Home({ user }) {
           <p>Joined: {user.created_at}</p>
         </>
       ) : (
-        <h3>Welcome bhai, kr liya na GitHub se login tune </h3>
+        <h3>Welcome bhai</h3>
       )}
     </div>
   );
