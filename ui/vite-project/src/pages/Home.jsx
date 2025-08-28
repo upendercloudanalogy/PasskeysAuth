@@ -1,7 +1,11 @@
 import React from "react";
-
+import { useNavigate } from "react-router-dom";
 // Home.jsx
 export default function Home({ user }) {
+  const navigate = useNavigate();
+  const handleClick = () => {
+    navigate("/plans");
+  }
   return (
     <div>
       {user ? (
@@ -14,6 +18,8 @@ export default function Home({ user }) {
       ) : (
         <h3>Welcome bhai</h3>
       )}
+
+      <button onClick={handleClick}>PREMIUM PLANS</button>
     </div>
   );
 }
