@@ -8,6 +8,7 @@ import Cookies from "js-cookie";
 import PaymentSuccess from "./pages/PaymentSuccess";
 import PaymentCancel from "./pages/PaymentCancel";
 
+
 export default function App() {
   const [user, setUser] = useState(null);
 

@@ -28,7 +28,7 @@ export class PaypalService {
         },
       ],
       application_context: {
-        brand_name: 'My App', // optional (shows on PayPal)
+        brand_name: 'My App', // optional (shows on PayPal) 
         landing_page: 'LOGIN', // "BILLING" for guest checkout
         user_action: 'PAY_NOW', // shows "Pay Now" instead of "Continue"
         return_url: 'http://localhost:3000/paypal/success',
